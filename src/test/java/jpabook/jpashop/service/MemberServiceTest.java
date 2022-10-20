@@ -19,6 +19,7 @@ import static org.junit.Assert.*;
 
 @SpringBootTest
 @Transactional
+//@Rollback(value = false)
 public class MemberServiceTest {
     @Autowired MemberService memberService;
     @Autowired MemberRepository memberRepository;
