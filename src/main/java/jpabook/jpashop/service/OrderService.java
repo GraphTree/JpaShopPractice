@@ -46,15 +46,15 @@ public class OrderService {
     }
 
 
-    //주문취소
-//    @Transactional
-//    public void cancelOrder(Long orderId) {
-//        //엔티티 조회
-//        Order order = orderRepository.findOne(orderId);
-//        //주문 취소
-//        order.cancel();
-//
-//    }
+//    주문취소
+    @Transactional
+    public void cancelOrder(Long orderId) {
+        //엔티티 조회
+        Order order = orderRepository.findOne(orderId);
+        //주문 취소
+        order.cancel();
+
+    }
 
     //검색
 //    public List<Order> findOrders(OrderSwarch orderSwarch) {

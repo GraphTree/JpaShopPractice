@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
+import static org.assertj.core.api.Fail.fail;
 
 
 @SpringBootTest
@@ -27,16 +28,8 @@ public class OrderServiceTest {
 
 
 //        given
-        Member member = new Member();
-        member.setName("member1");
-        member.setAddress(new Address("seoul", "river", "934=134"));
-        em.persist(member);
-
-        Book book = new Book();
-        book.setName("pricnciple");
-        book.setPrice(1000);
-        book.setStockQuantity(10);
-        em.persist(book);
+        Member member = createMember("member1");
+        Book book = createBook("book0", 10000, 10);
 
         int orderCount = 2;
 
@@ -50,10 +43,30 @@ public class OrderServiceTest {
         Assert.assertEquals("상품 주문시 상태는 order", OrderStatus.ORDER, getOrder.getStatus() );
     }
 
+    private Book createBook(String name,int price,int quantity) {
+        Book book = new Book();
+        book.setName(name);
+        book.setPrice(price);
+        book.setStockQuantity(quantity);
+        em.persist(book);
+        return book;
+    }
+
+    private Member createMember(String name) {
+        Member member = new Member();
+        member.setName(name);
+        member.setAddress(new Address("seoul", "river", "934=134"));
+        em.persist(member);
+        return member;
+    }
+
     @Test
     public void 주문취소() throws Exception{
         //given
-        
+        Member member = createMember("member3");
+        Book book = createBook("book", 10000, 10);
+
+        int orderCount = 10;
         //when
         
         //then
@@ -61,9 +74,15 @@ public class OrderServiceTest {
     @Test
     public void 상품주문_재고수량초과() throws Exception{
         //given
-        
+        Member member = createMember("member2");
+        Book book = createBook("book", 10000, 10);
+
+        int orderCount = 10;
         //when
+        orderService.order(member.getId(), book.getId(), orderCount);
+
         
         //then
+        fail("재고수량 예외가 터져야함");
     }
 }
