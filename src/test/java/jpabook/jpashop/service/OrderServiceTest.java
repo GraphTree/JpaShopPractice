@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
+import static junit.framework.TestCase.assertEquals;
 import static org.assertj.core.api.Fail.fail;
 
 
@@ -65,11 +66,16 @@ public class OrderServiceTest {
         //given
         Member member = createMember("member3");
         Book book = createBook("book", 10000, 10);
-
         int orderCount = 10;
+        Long orderId = orderService.order(member.getId(), book.getId(), orderCount);
+
         //when
-        
+        orderService.cancelOrder(orderId);
         //then
+        Order getOrder  =orderRepository.findOne(orderId);
+        assertEquals("주문취소시 상태는 cancel ", OrderStatus.CANCEL, getOrder.getStatus());
+        assertEquals("주문이 취소된 상품은 그만큼 재고가 증가해야 한다", 10 ,book.getStockQuantity());
+
     }
     @Test
     public void 상품주문_재고수량초과() throws Exception{
