@@ -1,4 +1,4 @@
-package jpabook.jpashop.service;
+package jpabook.jpashop.repository.service;
 
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.repository.MemberRepository;
@@ -47,5 +47,9 @@ public class MemberService {
     }
 
 
-
+    @Transactional
+    public void update(Long id, String name) {
+        Member member = memberRepository.findOne(id);
+        member.setName(name);
+    }
 }
