@@ -57,7 +57,7 @@ public class OrderRepository {
         ).getResultList();
     }
 
-    public List<Order> findAllWithItem(int offset, int limit) {
+    public List<Order> findAllWithMemberDelivery(int offset, int limit) {
         return em.createQuery(
                 "select o from Order o" +
                         " join fetch o.member m" +
